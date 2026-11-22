@@ -1,0 +1,5 @@
+Django==5.2.17
+djangorestframework==3.18.0
+drf-spectacular==0.30.0
+django-filter==26.1
+pillow==12.3.0

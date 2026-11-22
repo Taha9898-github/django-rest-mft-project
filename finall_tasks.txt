@@ -1,0 +1,11 @@
+1- seed data => 
+    1- database and migration delete
+    2- makemigration, migrate
+    3- seed data (1 user, two rest, 4 categories, 3 product)
+    4- test (python manage.py check)
+
+2- change models
+    2-1- restaurants must have (open time, location, rank:float)
+    2-2- order, order_item (serializer, view, seed_data)
+
+3- github
