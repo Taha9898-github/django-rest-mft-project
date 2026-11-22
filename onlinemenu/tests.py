@@ -325,6 +325,39 @@ class RestaurantDetailAPITests(SeedDataTestBase, TestCase):
         self.assertIn("location", response.data)
 
 
+class CategoryAPITests(SeedDataTestBase, TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.test_user = User.objects.create_user(
+            username="categoryapi", phone="09144444444", password="testpass123"
+        )
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.test_user)
+        self.restaurant = Restaurant.objects.get(name="Kentacki")
+
+    def test_create_category_with_restaurant(self):
+        response = self.client.post(
+            "/api/v1/categories/",
+            {"restaurant": self.restaurant.pk, "name": "Salads"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(
+            ProductCategory.objects.filter(
+                restaurant=self.restaurant, name="Salads"
+            ).exists()
+        )
+
+    def test_create_category_without_restaurant_rejected(self):
+        response = self.client.post(
+            "/api/v1/categories/", {"name": "NoRestaurant"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("restaurant", response.data)
+
+
 class OrderAPITests(SeedDataTestBase, TestCase):
     @classmethod
     def setUpTestData(cls):
